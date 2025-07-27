@@ -1,4 +1,4 @@
-
+/.idea/
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -13,7 +13,7 @@
 /phpunit.xml
 /.phpunit.cache/
 ###< phpunit/phpunit ###
-
+/migrations/*
 ###> symfony/asset-mapper ###
 /public/assets/
 /assets/vendor/
