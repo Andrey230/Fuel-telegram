@@ -5,7 +5,6 @@ namespace App\service\telegram;
 use App\service\recordCreator\RecordCreator;
 use App\service\recordFinder\RecordFinder;
 use App\service\userStateService\UserStateService;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Telegram\Bot\Api;
 
 class TelegramBotService
@@ -79,7 +78,7 @@ class TelegramBotService
                 if(!ctype_digit($amount)) {
                     $this->telegram->sendMessage([
                         'chat_id' => $chatId,
-                        'text' => 'Васичка, введи нормально количество литров (только цифры): ',
+                        'text' => 'Васичка, Wprowadź poprawną ilość litrów (tylko cyfry):',
                     ]);
                     return;
                 }
@@ -96,7 +95,7 @@ class TelegramBotService
                 if(!ctype_digit($newMileage)) {
                     $this->telegram->sendMessage([
                         'chat_id' => $chatId,
-                        'text' => 'Васичка, введи нормально пробег (только цифры): ',
+                        'text' => 'Wprowadź poprawny przebieg (tylko cyfry):',
                     ]);
                     return;
                 }
@@ -105,7 +104,7 @@ class TelegramBotService
                 if($newMileage <= $truckMileage) {
                     $this->telegram->sendMessage([
                         'chat_id' => $chatId,
-                        'text' => 'Ты кого кинуть решил, голова ??? Вихоту тоже кушать нужно: '.$truckMileage.$state->getData()['truckNumber'],
+                        'text' => 'Przebieg pojazdu jest mniejszy niż wcześniej wprowadzony.',
                     ]);
                     return;
                 }
@@ -128,7 +127,7 @@ class TelegramBotService
 
                 $this->telegram->sendMessage([
                     'chat_id' => $chatId,
-                    'text' => 'Спасибо! Заправка добавлена ✅',
+                    'text' => 'Dziękuję! Tankowanie zostało dodane ✅',
                 ]);
                 break;
             case UserStateService::WAITING_TYPE:
@@ -183,7 +182,7 @@ class TelegramBotService
             case UserStateService::START_STATE:
                 return [
                     'chat_id' => $this->chatId,
-                    'text' => 'Напиши /set_fuel, чтобы добавить новую заправку.',
+                    'text' => 'Wybierz /set_fuel, aby dodać nowe tankowanie.',
                 ];
             case UserStateService::WAITING_TYPE:
 
@@ -198,18 +197,18 @@ class TelegramBotService
 
                 return [
                     'chat_id' => $this->chatId,
-                    'text' => 'Выберите тип топлива:',
+                    'text' => 'Wybierz rodzaj paliwa:',
                     'reply_markup' => json_encode($keyboard),
                 ];
             case UserStateService::WAITING_AMOUNT:
                 return [
                     'chat_id' => $this->chatId,
-                    'text' => 'Введите количество литров:',
+                    'text' => 'Wprowadź ilość litrów:',
                 ];
             case UserStateService::WAITING_MILEAGE:
                 return [
                     'chat_id' => $this->chatId,
-                    'text' => 'Введите пробег машины: ',
+                    'text' => 'Wprowadź przebieg samochodu:',
                 ];
             default:
                 $truckNumbers = $this->recordFinder->findTruckNumbersByUser($this->telegramId);
@@ -225,7 +224,7 @@ class TelegramBotService
 
                 return [
                     'chat_id' => $this->chatId,
-                    'text' => 'Введите новый номер машины или выбери ранее запралвеные:',
+                    'text' => 'Wprowadź nowy numer rejestracyjny pojazdu lub wybierz jeden z wcześniej tankowanych:',
                     'reply_markup' => json_encode($keyboard),
                 ];
         }
